@@ -1,5 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, Toast, useToast } from '@/components/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { CareerPath } from '../types';
 import { careerPaths } from '../data/careerPaths';
 import { CheckCircle, XCircle } from 'lucide-react';
@@ -9,15 +11,18 @@ const CareerPaths: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
-    const skills: any = location.state?.skills || [];
+  
+  const skills: any = location.state?.skills || [];
   
   const getPathMatchScore = (path: CareerPath) => {
     return Math.min(skills.length * 10, 100);
   };
-    const handlePathSelect = (pathId: string) => {
+  
+  const handlePathSelect = (pathId: string) => {
     navigate(`/module/${pathId}/0`, { state: { selectedPathId: pathId } });
   };
-    return (
+  
+  return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto p-6">
         <div className="mb-8">
@@ -90,7 +95,8 @@ const CareerPaths: React.FC = () => {
         </div>
         
         <div className="mt-8 text-center">
-          <Button             variant="outline"
+          <Button 
+            variant="outline"
             onClick={() => navigate('/')}
           >
             Back to Skill Assessment

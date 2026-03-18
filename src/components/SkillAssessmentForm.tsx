@@ -1,30 +1,35 @@
 import { useState } from 'react';
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Form, FormControl, FormField, FormItem, FormLabel, Input, Textarea, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Toast, useToast } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/components/ui/use-toast';
 import { Skill } from '../types';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const SkillAssessmentForm: React.FC = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [newSkill, setNewSkill] = useState('');
-  const [newProficiency, setNewProficiency] = useState(1);
+  const [newProficiency, setNewProficiency] = useState('1');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleAddSkill = () => {
-    if (newSkill.trim() && newProficiency >= 1 && newProficiency <= 10) {
+    if (newSkill.trim() && parseInt(newProficiency) >= 1 && parseInt(newProficiency) <= 10) {
       setSkills(prev => [
         ...prev,
         {
           id: Math.random().toString(36).substr(2, 9),
           name: newSkill.trim(),
-          proficiency: newProficiency
+          proficiency: parseInt(newProficiency)
         }
       ]);
       setNewSkill('');
-      setNewProficiency(1);
+      setNewProficiency('1');
     }
   };
 
@@ -61,10 +66,11 @@ const SkillAssessmentForm: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div className="space-y-2">
-                <FormField control={<Input
+                <FormField
+                  control={<Input
                     placeholder="Enter a skill (e.g., JavaScript, Python, Design)"
                     value={newSkill}
                     onChange={(e) => setNewSkill(e.target.value)}
@@ -82,14 +88,14 @@ const SkillAssessmentForm: React.FC = () => {
                   control={
                     <Select
                       value={newProficiency}
-                      onValueChange={(value) => setNewProficiency(Number(value))}
+                      onValueChange={(value) => setNewProficiency(value)}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select proficiency level" />
                       </SelectTrigger>
                       <SelectContent>
                         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(level => (
-                          <SelectItem key={level} value={level}>
+                          <SelectItem key={level} value={level.toString()}>
                             {level} - {level <= 3 ? 'Beginner' : level <= 6 ? 'Intermediate' : 'Advanced'}
                           </SelectItem>
                         ))}
@@ -149,7 +155,7 @@ const SkillAssessmentForm: React.FC = () => {
                 {isSubmitting ? 'Generating Paths...' : 'Generate Career Paths'}
               </Button>
             </div>
-          </Form>
+          </form>
         </CardContent>
       </Card>
       

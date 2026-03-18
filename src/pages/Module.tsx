@@ -4,15 +4,11 @@ import {
   CardContent, 
   CardDescription, 
   CardHeader, 
-  CardTitle, 
-  Button, 
-  Toast, 
-  useToast,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@/components/ui';
+  CardTitle 
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/components/ui/use-toast';
 import { Module, CareerPath, LearningMaterial } from '../types';
 import { careerPaths } from '../data/careerPaths';
 import { CheckCircle, XCircle, Play, BookOpen, Zap } from 'lucide-react';
@@ -24,7 +20,8 @@ const ModulePage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const toast = useToast().toast;
-    const selectedPathId = location.state?.selectedPathId || pathId;
+  
+  const selectedPathId = location.state?.selectedPathId || pathId;
   const selectedPath = careerPaths.find(p => p.id === selectedPathId);
   
   if (!selectedPath) {
@@ -250,7 +247,8 @@ const ModulePage: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <Button                     onClick={handleQuizComplete}
+                  <Button 
+                    onClick={handleQuizComplete}
                     className="w-full"
                   >
                     {score >= Math.ceil(totalQuestions * currentModule.quiz.passingScore / 100)                       ? 'Continue to Next Module'                       : 'Retake Quiz'}
@@ -298,7 +296,8 @@ const ModulePage: React.FC = () => {
                             </div>
                           </div>
                         )}
-                                                {!isSubmitting && !showResults && currentQuestion < totalQuestions - 1 && (
+                        
+                        {!isSubmitting && !showResults && currentQuestion < totalQuestions - 1 && (
                           <Button 
                             variant="outline"
                             onClick={() => {
@@ -336,16 +335,18 @@ const ModulePage: React.FC = () => {
                 variant="outline"
                 onClick={() => navigate(`/module/${selectedPathId}/${moduleIndex - 1}`)}
               >
-                Previous Module              </Button>
+                Previous Module
+              </Button>
             )}
           </div>
           <div className="flex-1 text-right">
             {moduleIndex < selectedPath.modules.length - 1 && !isLocked && (
               <Button 
                 onClick={() => navigate(`/module/${selectedPathId}/${moduleIndex + 1}`)}
-                isDisabled={currentQuestion < totalQuestions - 1 && !showResults}
+                disabled={currentQuestion < totalQuestions - 1 && !showResults}
               >
-                Next Module              </Button>
+                Next Module
+              </Button>
             )}
           </div>
         </div>
